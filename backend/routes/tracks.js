@@ -53,6 +53,39 @@ router.use(
 );
 
 router.use(
+  '/:id/download',
+  [
+    param('id')
+      .trim()
+      .notEmpty()
+      .matches(/^[a-zA-Z0-9]+$/)
+      .withMessage('invalid id: can only be alphanumeric')
+      .escape(),
+
+    query('user_signature')
+      .optional()
+      .escape(),
+
+    query('user_data')
+      .optional()
+      .escape(),
+
+    query('nft_access_signature')
+      .optional()
+      .escape(),
+
+    query('original')
+      .optional()
+      .escape(),
+
+    query('filename')
+      .optional()
+      .escape()
+  ],
+  downloadTrack,
+);
+
+router.use(
   '/:id',
   [
     param('id')
@@ -64,4 +97,5 @@ router.use(
   ],
   getTrackById,
 );
+
 export default router;

@@ -1,3 +1,4 @@
+import fs from 'fs';
 import {
   matchedData,
   validationResult,
@@ -8,8 +9,22 @@ import {
   requestClient,
 } from '../utils';
 
+// download track by id
 const downloadTrack = async (req, res) => {
+  const trackId = req.params.id;
+  console.log('Download Track:', trackId);
+  const config = {
+    url : `/tracks/${trackId}/download`,
+  };
 
+  try {
+    const result = await requestClient.client(config);
+    console.log(result);
+    return res.send(result?.data);
+  } catch (error) {
+    console.error('Error downloading track:', error.message);
+    return globalErrorHandler(error, res);
+  }
 };
 
 const getTrackById = async (req, res) => {
