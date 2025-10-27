@@ -1,13 +1,13 @@
-const CURRENT_DATE = '2025-01-23 15:02:45';
-const CURRENT_USER = 'gabrielisaacs';
+import { CACHE_DEFAULTS } from "../constants/config";
 
 export class Cache {
   constructor(options = {}) {
     this.cache = new Map();
-    this.ttl = options.ttl || 5 * 60 * 1000; // 5 minutes default TTL
-    this.maxSize = options.maxSize || 100; // Maximum number of items in cache
-    this.cleanupInterval = options.cleanupInterval || 60 * 1000; // Cleanup every minute
-    this.debug = options.debug || false;
+    this.ttl = options.ttl || CACHE_DEFAULTS.ttl;
+    this.maxSize = options.maxSize || CACHE_DEFAULTS.maxSize;
+    this.cleanupInterval =
+      options.cleanupInterval || CACHE_DEFAULTS.cleanupInterval;
+    this.debug = options.debug || CACHE_DEFAULTS.debug;
 
     // Start automatic cleanup
     this.startCleanup();
@@ -26,7 +26,8 @@ export class Cache {
     this.cache.set(key, {
       value,
       timestamp: Date.now(),
-      accessCount: 0
+      accessCount: 0,
+      lastAccessed: null,
     });
   }
 
@@ -63,7 +64,7 @@ export class Cache {
   }
 
   clear() {
-    this.log('Clearing entire cache');
+    this.log("Clearing entire cache");
     this.cache.clear();
   }
 
@@ -81,7 +82,7 @@ export class Cache {
       size: this.cache.size,
       maxSize: this.maxSize,
       ttl: this.ttl,
-      entries: {}
+      entries: {},
     };
 
     for (const [key, item] of this.cache.entries()) {
@@ -89,7 +90,7 @@ export class Cache {
         age: Date.now() - item.timestamp,
         accessCount: item.accessCount,
         isExpired: this.isExpired(item),
-        lastAccessed: item.lastAccessed
+        lastAccessed: item.lastAccessed,
       };
     }
 
@@ -119,15 +120,11 @@ export class Cache {
   }
 
   log(message) {
+    const date = new Date().toLocaleDateString();
     if (this.debug) {
-      console.log(`[Cache ${CURRENT_DATE}] ${message}`);
+      console.log(`[Cache ${date}] ${message}`);
     }
   }
 }
 
-export const dataCache = new Cache({
-  ttl: 5 * 60 * 1000, // 5 minutes
-  maxSize: 100,
-  cleanupInterval: 60 * 1000, // 1 minute
-  debug: process.env.NODE_ENV === 'development'
-});
+export const dataCache = new Cache();
