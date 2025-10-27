@@ -100,5 +100,6 @@ class LocalStorage {
   }
 }
 const store = new LocalStorage(rootDir);
-const isReady = store.isReady();
+const isReady = await store.isReady();
+console.log(`storage is Ready: [${isReady}]. DIR: ${store.root}`);
 export default store;
