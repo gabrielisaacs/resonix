@@ -13,7 +13,7 @@ const hasTracks = async (playlist, index) => {
         }
         const response = await requestClient.make(config);
         let length;
-        if (response.data.results.length) {
+        if (response?.data?.results?.length) {
           const tracksCount = response.data.results[0].tracks.length;
           if (tracksCount >= 10) {
             length = tracksCount;

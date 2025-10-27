@@ -1,13 +1,13 @@
-import React from "react";
-import SideBar from "../components/SideBar";
-import TopNav from "../components/TopNav";
-import BottomPlayer from "../components/BottomPlayer";
-import PlayerHome from "../components/PlayerHome";
-import SongList from "../components/SongList";
+import React from 'react';
+import SideBar from '../components/SideBar';
+import TopNav from '../components/TopNav';
+import BottomPlayer from '../components/BottomPlayer';
+import PlayerHome from '../components/PlayerHome';
+import SongList from '../components/SongList';
 
 const MusicPlayer = () => {
   return (
-    <div className="flex min-w-[100vw]">
+    <div className="flex">
       <SideBar />
       <div className="flex flex-col min-h-screen w-full ml-[15rem]">
         <TopNav />
